@@ -4,7 +4,7 @@ const axios = require('axios');
 const app = express();
 const PORT = 5000;
 const ZOHO_API_URL = 'https://www.zohoapis.in/crm/v2/Contacts';
-const access_Token = '1000.9283a9e0571d7837d14664c32c2f6cd6.dbe895beb15deacbebe74a6b15926460'
+const access_Token = '1000.9bb819b428a18d448063fd827ddedb90.923b54e60bf8569707ad0517b1f61520'
 
 app.use(express.json());
 
@@ -26,14 +26,14 @@ app.get('/', async (req, res) => {
 });
 app.put('/Contacts/:id', async (req, res) => {
     const contactId = req.params.id;
-    const updatedContactData = req.body; // req.body is already an object
+    const updatedContactData = req.body; 
 
     try {
         const dataToUpdate = {
-            data: [ // Wrap your data in an array as Zoho CRM expects an array of records
+            data: [
                 {
-                    id: contactId, // Include the contact's ID here
-                    ...updatedContactData, // Include all other fields you want to update
+                    id: contactId, 
+                    ...updatedContactData, 
                 }
             ]
         };
@@ -57,6 +57,44 @@ app.put('/Contacts/:id', async (req, res) => {
         }
     }
 });
+app.post('/', async (req, res) => {
+    const newContactData = req.body;
+    console.log("Data Added", newContactData);
+
+    try {
+        const dataToCreate = {
+            data: [
+                {
+                    ...newContactData,
+                }
+            ]
+        };
+        console.log("Data to create", dataToCreate);
+
+        const response = await axios.post(`${ZOHO_API_URL}`, dataToCreate, {
+            headers: {
+                Authorization: `Zoho-oauthtoken ${access_Token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error creating contact in Zoho CRM:', error);
+
+        if (error.response && error.response.data) {
+            const zohoError = error.response.data;
+            console.error('Zoho CRM Error Response:', zohoError);
+            res.status(500).json(zohoError);
+        } else {
+            console.error('Internal Server Error:', error.message);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+});
+
+
+
 
   
 

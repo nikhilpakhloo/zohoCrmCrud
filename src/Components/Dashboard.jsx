@@ -80,6 +80,8 @@ export default function Dashboard({ mode }) {
             );
         });
     };
+
+    
     
     const handleSaveClick = (e) => {
         e.preventDefault();
@@ -154,7 +156,7 @@ export default function Dashboard({ mode }) {
                             {currentContacts.map((item, index) => (
                                 <tr key={index}>
                                     <td>{item.id}</td>
-                                    <td>{item.Full_Name}</td>
+                                    <td>{item.First_Name}</td>
                                     <td>{item.Email}</td>
                                     <td>{item.Phone}</td>
                                     <td>
