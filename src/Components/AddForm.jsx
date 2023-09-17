@@ -140,7 +140,7 @@ export default function AddForm() {
           />
         </div>
         <div className='d-flex justify-content-center'>
-        <button type="submit" className="btn btn-primary mt-1">
+        <button type="submit" className="btn btn-primary">
           Submit
         </button>
         </div>
