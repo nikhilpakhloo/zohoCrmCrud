@@ -1,0 +1,87 @@
+client id = 1000.B9BFLV47K6WZH1N9QVCK0CR67GL9YM
+client secret = a6cd6da6849b1c7ddef314beabffbf54fbb7a02e5b
+
+https://accounts.zoho.in/oauth/v2/auth?scope=ZohoContacts.contactapi.ALL,ZohoContacts.contactapi.CREATE,ZohoContacts.contactapi.DELETE,ZohoContacts.contactapi.READ,ZohoContacts.contactapi.UPDATE,ZohoCRM.modules.contacts.ALL&client_id=1000.B9BFLV47K6WZH1N9QVCK0CR67GL9YM&state=testing&response_type=code&redirect_uri=http://localhost:3000&access_type=offline
+
+
+
+https://accounts.zoho.in/oauth/v2/token?code=1000.dd7exxxxxxxxxxxxxxxxxxxxxxxx9bb8.b6c0xxxxxxxxxxxxxxxxxxxxxxxxdca4&client_id=1000.B9BFLV47K6WZH1N9QVCK0CR67GL9YM&client_secret=a6cd6da6849b1c7ddef314beabffbf54fbb7a02e5b&redirect_uri=http://localhost:3000&grant_type=authorization_code
+
+{{accounts-url}}/oauth/v2/token?{{authorization-code}}&{{client-id}}&{{client-secret}}&{{redirect-uri}}&grant_type=authorization_code
+
+
+
+    <tr>
+                                        <td>First Name:</td>
+                                        <td>{selectedContact.First_Name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Name:</td>
+                                        <td>{selectedContact.Last_Name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>{selectedContact.Email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Department:</td>
+                                        <td>{selectedContact.Department}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Designation:</td>
+                                        <td>{selectedContact.Title}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Twitter:</td>
+                                        <td>{selectedContact.Twitter}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Skype:</td>
+                                        <td>{selectedContact.Skype_ID}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Country:</td>
+                                        <td>{selectedContact.Mailing_Country}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>City:</td>
+                                        <td>{selectedContact.Mailing_City}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Street:</td>
+                                        <td>{selectedContact.Mailing_Street}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Postal Code:</td>
+                                        <td>{selectedContact.Mailing_Zip}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Review Process:</td>
+                                        <td>{`Approve:${selectedContact.$review_process.approve},Reject:${selectedContact.$review_process.reject},Resubmit:${selectedContact.$review_process.resubmit}`}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Account Name & ID:</td>
+                                        <td>{`${selectedContact.Account_Name.name} : ${selectedContact.Account_Name.name}`}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Activity:</td>
+                                        <td>{selectedContact.Last_Activity_Time}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Approval Status:</td>
+                                        <td>{`Delegate:${selectedContact.$approval.delegate} ,Approved:${selectedContact.$approval.approve} ,Rejected:${selectedContact.$approval.reject} ,Resubmitted: ${selectedContact.$approval.resubmit}`}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Created by:</td>
+                                        <td>{`${selectedContact.Created_By.name} ${selectedContact.Created_By.id} ${selectedContact.Created_By.email}`}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Modified By:</td>
+                                        <td>{`${selectedContact.Modified_By.name} ${selectedContact.Modified_By.id} ${selectedContact.Modified_By.email}`}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Owner:</td>
+                                        <td>{`${selectedContact.Owner.name} ${selectedContact.Owner.id} ${selectedContact.Owner.email}`}</td>
+                                    </tr>
+
+
