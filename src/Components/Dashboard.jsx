@@ -103,8 +103,24 @@ export default function Dashboard({ mode }) {
                 console.error('Error updating contact:', error);
             });
     };
+    const handleDeleteClick = (contact) => {
+        setSelectedContact(contact); 
+        
+    
+        axios.delete(`${node_url}/Contacts/${contact.id}`)
+        .then((response) => {
+            console.log("Contact is deleting", response.data);
+            window.location.reload();
+            
+        })
+        .catch((error) => {
+            console.error("Error Deleting Contact", error);
+         
+        });
+    };
     
     
+     
 
     const [currentPage, setCurrentPage] = useState(1);
     const contactsPerPage = 5;
@@ -162,7 +178,8 @@ export default function Dashboard({ mode }) {
                                     <td>
                                         <button className="btn btn-success btn-sm" onClick={() => handleViewClick(item)}>View</button>
                                         <button className="btn btn-primary ms-3 btn-sm" onClick={() => handleEditClick(item)}>Edit</button>
-                                        <button className="btn btn-danger ms-3 btn-sm" >Delete</button>
+                                        
+                                        <button className="btn btn-danger ms-3 btn-sm" onClick={() => handleDeleteClick(item)}>Delete</button>
                                     </td>
                                 </tr>
                             ))}
