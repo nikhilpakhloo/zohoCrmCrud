@@ -3,22 +3,22 @@ const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const PORT = 5000;
+const REDIRECT_URI = 'http://localhost:3000';
+const crypto = require('crypto')
 const ZOHO_API_URL = 'https://www.zohoapis.in/crm/v2/Contacts';
-
-
 const CLIENT_ID = '1000.B9BFLV47K6WZH1N9QVCK0CR67GL9YM';
 const CLIENT_SECRET = 'a6cd6da6849b1c7ddef314beabffbf54fbb7a02e5b';
 const REFRESH_TOKEN = '1000.38eb806bbebff514abbdab8c473dea74.b1f79c6b2db45e0f55f346447a22bfae';
-
 let access_token = '1000.63f13a1996fdd23c1144bc50aab1e754.6b9bae68b039cae6f47f7da256dcb47e';
 let lastTokenRefreshTime = null;
+const jwtSecretKey = crypto.randomBytes(32).toString('hex');
 app.use(express.json());
-
-
 app.use(cors({
     origin: 'http://localhost:3000',
 }));
 
+
+// ---------------------------------Refreshing the Access_token---------------------------------------------------------------------------
 const refreshAccessToken = async () => {
     try {
         const response = await axios.post('https://accounts.zoho.in/oauth/v2/token', null, {
@@ -30,7 +30,7 @@ const refreshAccessToken = async () => {
             },
         });
         access_token = response.data.access_token;
-    
+
         lastTokenRefreshTime = Date.now();
     } catch (error) {
         console.error('Error:', error);
@@ -40,22 +40,20 @@ const refreshAccessToken = async () => {
         }
     }
 };
-
-
-const tokenRefreshInterval = 55 * 60 * 1000; 
+const tokenRefreshInterval = 55 * 60 * 1000;
 setInterval(refreshAccessToken, tokenRefreshInterval);
+// ------------------------------------after 55 min this code run for refresh token-----------------------------------------------
 
 
 app.use(async (req, res, next) => {
-   
+
     const tokenExpirationTime = lastTokenRefreshTime + tokenRefreshInterval;
     if (!access_token || Date.now() >= tokenExpirationTime) {
         await refreshAccessToken();
     }
     next();
 });
-
-
+// ------------------------------------------fetching the contacts from zoho------------------------------------------------------------
 app.get('/', async (req, res) => {
     try {
         const response = await axios.get(ZOHO_API_URL, {
@@ -68,16 +66,17 @@ app.get('/', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+// -------------------------------------------making update on contacts-----------------------------------------------------------
 app.put('/Contacts/:id', async (req, res) => {
     const contactId = req.params.id;
-    const updatedContactData = req.body; 
+    const updatedContactData = req.body;
 
     try {
         const dataToUpdate = {
             data: [
                 {
-                    id: contactId, 
-                    ...updatedContactData, 
+                    id: contactId,
+                    ...updatedContactData,
                 }
             ]
         };
@@ -88,7 +87,7 @@ app.put('/Contacts/:id', async (req, res) => {
                 'Content-Type': 'application/json',
             },
         });
-    
+
         res.json(response.data);
     } catch (error) {
         if (error.response && error.response.data) {
@@ -101,6 +100,7 @@ app.put('/Contacts/:id', async (req, res) => {
         }
     }
 });
+// ----------------------------------------inserting new value in crm --------------------------------------------------------
 app.post('/', async (req, res) => {
     const newContactData = req.body;
     console.log("Data Added", newContactData);
@@ -136,11 +136,12 @@ app.post('/', async (req, res) => {
         }
     }
 });
+// -----------------------------------------deleting contacts fron crm ------------------------------------------------------------
 app.delete('/Contacts/:id', async (req, res) => {
     const contactId = req.params.id;
 
     try {
-       
+
         const deleteUrl = `${ZOHO_API_URL}/${contactId}`;
 
         const response = await axios.delete(deleteUrl, {
@@ -163,13 +164,29 @@ app.delete('/Contacts/:id', async (req, res) => {
 });
 
 
+// -----------------------------------------forauthentication and making jwt token for session---------------------------------------
+const JWT_SECRET = jwtSecretKey;
+app.post('/api/zoho-login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const response = await axios.post('https://accounts.zoho.in/oauth/v2/token', null, {
+            params: {
+                grant_type: 'password',
+                client_id: CLIENT_ID,
+                client_secret: CLIENT_SECRET,
+                redirect_uri: REDIRECT_URI,
+                username: email,
+                password: password,
+            },
+        });
+        const zohoAccessToken = response.data.access_token;
+        const jwtToken = jwt.sign({ email: email }, JWT_SECRET, { expiresIn: '2h' });
+        res.status(200).json({ jwtToken });
+    } catch (error) {
 
-
-
-  
-
-
-
+        res.status(error.response?.status || 500).json({ error: 'Login failed' });
+    }
+});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
