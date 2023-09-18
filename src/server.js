@@ -4,19 +4,63 @@ const axios = require('axios');
 const app = express();
 const PORT = 5000;
 const ZOHO_API_URL = 'https://www.zohoapis.in/crm/v2/Contacts';
-const access_Token = '1000.9bb819b428a18d448063fd827ddedb90.923b54e60bf8569707ad0517b1f61520'
 
+
+const CLIENT_ID = '1000.B9BFLV47K6WZH1N9QVCK0CR67GL9YM';
+const CLIENT_SECRET = 'a6cd6da6849b1c7ddef314beabffbf54fbb7a02e5b';
+const REFRESH_TOKEN = '1000.38eb806bbebff514abbdab8c473dea74.b1f79c6b2db45e0f55f346447a22bfae';
+
+let access_token = '1000.63f13a1996fdd23c1144bc50aab1e754.6b9bae68b039cae6f47f7da256dcb47e';
+let lastTokenRefreshTime = null;
 app.use(express.json());
 
 
 app.use(cors({
     origin: 'http://localhost:3000',
 }));
+
+const refreshAccessToken = async () => {
+    try {
+        const response = await axios.post('https://accounts.zoho.in/oauth/v2/token', null, {
+            params: {
+                refresh_token: REFRESH_TOKEN,
+                client_id: CLIENT_ID,
+                client_secret: CLIENT_SECRET,
+                grant_type: 'refresh_token',
+            },
+        });
+        access_token = response.data.access_token;
+    
+        lastTokenRefreshTime = Date.now();
+    } catch (error) {
+        console.error('Error:', error);
+        if (error.response && error.response.data) {
+            const zohoError = error.response.data;
+            console.error('Zoho CRM Error Response:', zohoError);
+        }
+    }
+};
+
+
+const tokenRefreshInterval = 55 * 60 * 1000; 
+setInterval(refreshAccessToken, tokenRefreshInterval);
+
+
+app.use(async (req, res, next) => {
+   
+    const tokenExpirationTime = lastTokenRefreshTime + tokenRefreshInterval;
+    if (!access_token || Date.now() >= tokenExpirationTime) {
+        await refreshAccessToken();
+    }
+    next();
+});
+
+
 app.get('/', async (req, res) => {
     try {
         const response = await axios.get(ZOHO_API_URL, {
             headers: {
-                Authorization: `Zoho-oauthtoken ${access_Token}`
+                Authorization: `Zoho-oauthtoken ${access_token}`
             },
         });
         res.json(response.data);
@@ -40,7 +84,7 @@ app.put('/Contacts/:id', async (req, res) => {
 
         const response = await axios.put(`${ZOHO_API_URL}`, dataToUpdate, {
             headers: {
-                Authorization: `Zoho-oauthtoken ${access_Token}`,
+                Authorization: `Zoho-oauthtoken ${access_token}`,
                 'Content-Type': 'application/json',
             },
         });
@@ -73,7 +117,7 @@ app.post('/', async (req, res) => {
 
         const response = await axios.post(`${ZOHO_API_URL}`, dataToCreate, {
             headers: {
-                Authorization: `Zoho-oauthtoken ${access_Token}`,
+                Authorization: `Zoho-oauthtoken ${access_token}`,
                 'Content-Type': 'application/json',
             },
         });
@@ -92,6 +136,32 @@ app.post('/', async (req, res) => {
         }
     }
 });
+app.delete('/Contacts/:id', async (req, res) => {
+    const contactId = req.params.id;
+
+    try {
+       
+        const deleteUrl = `${ZOHO_API_URL}/${contactId}`;
+
+        const response = await axios.delete(deleteUrl, {
+            headers: {
+                Authorization: `Zoho-oauthtoken ${access_token}`,
+            },
+        });
+
+        res.json(response.data);
+    } catch (error) {
+        if (error.response && error.response.data) {
+            const zohoError = error.response.data;
+            console.error('Error deleting contact in Zoho CRM:', zohoError);
+            res.status(500).json(zohoError);
+        } else {
+            console.error('Error deleting contact in Zoho CRM:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+});
+
 
 
 
