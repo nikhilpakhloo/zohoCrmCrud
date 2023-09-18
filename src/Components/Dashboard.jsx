@@ -158,7 +158,7 @@ export default function Dashboard({ mode }) {
 
             <div className="container mt-5">
                 <div className={`table-responsive bg-light`}>
-                    <table className="table table-striped table-bordered table-hover mb-5">
+                    <table className="table table-striped table-bordered table-hover">
                         <thead className="thead-dark">
                             <tr>
                                 <th>Id</th>
@@ -222,7 +222,7 @@ export default function Dashboard({ mode }) {
                 )}
             </ReactModal>
 
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center mt-3">
                 <Pagination>
                     {Array.from({ length: Math.ceil(data.length / contactsPerPage) }, (_, index) => (
                         <Pagination.Item
