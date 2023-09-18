@@ -162,6 +162,7 @@ export default function Dashboard({ mode }) {
                                     <td>
                                         <button className="btn btn-success btn-sm" onClick={() => handleViewClick(item)}>View</button>
                                         <button className="btn btn-primary ms-3 btn-sm" onClick={() => handleEditClick(item)}>Edit</button>
+                                        <button className="btn btn-danger ms-3 btn-sm" >Delete</button>
                                     </td>
                                 </tr>
                             ))}
