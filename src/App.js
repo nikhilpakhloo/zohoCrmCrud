@@ -32,42 +32,42 @@ function App() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item active">
-                <Link className="nav-link" to="/">Home</Link>
+                <Link className="nav-link" to="#">Home</Link>
 
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">Leads</a>
               </li>
               <li className="nav-item">
-                <Link className='nav-link' to="/add">Contacts</Link>
+                <Link className='nav-link' to="/app/add">Add_Contacts</Link>
 
               </li>
               <li className="nav-item active">
-                <Link className="nav-link" to="/">Accounts</Link>
+                <Link className="nav-link" to="#">Accounts</Link>
 
               </li>
               <li className="nav-item active">
-                <Link className="nav-link" to="/">Deals</Link>
+                <Link className="nav-link" to="#">Deals</Link>
 
               </li>
               <li className="nav-item active">
-                <Link className="nav-link" to="/">Meetings</Link>
+                <Link className="nav-link" to="#">Meetings</Link>
 
               </li>
               <li className="nav-item active">
-                <Link className="nav-link" to="/">Reports</Link>
+                <Link className="nav-link" to="#">Reports</Link>
 
               </li>
               <li className="nav-item active">
-                <Link className="nav-link" to="/">Services</Link>
+                <Link className="nav-link" to="#">Services</Link>
 
               </li>
               <li className="nav-item active">
-                <Link className="nav-link" to="/">Projects</Link>
+                <Link className="nav-link" to="#">Projects</Link>
 
               </li>
               <li className="nav-item active">
-                <Link className="nav-link" to="/">...</Link>
+                <Link className="nav-link" to="#">...</Link>
 
               </li>
 

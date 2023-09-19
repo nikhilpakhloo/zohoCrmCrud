@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const node_url = 'http://localhost:5000';
 
@@ -18,6 +19,7 @@ export default function AddForm() {
     Phone: '',
     Email: '',
   });
+  const navigate = useNavigate()
 
   const handleSaveClick = (e) => {
     e.preventDefault();
@@ -36,8 +38,8 @@ export default function AddForm() {
           .post(`${node_url}`, newContact)
           .then((response) => {
             console.log('Contact created successfully:', response.data);
+           
 
-            // Clear the form data after successful submission
             setFormData({
               id: Math.floor(Math.random() * 1000000),
               First_Name: '',
@@ -45,6 +47,7 @@ export default function AddForm() {
               Phone: '',
               Email: '',
             });
+            navigate("/app")
           })
           .catch((error) => {
             console.error('Error creating contact:', error);

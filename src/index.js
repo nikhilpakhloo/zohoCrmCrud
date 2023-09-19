@@ -13,13 +13,15 @@ root.render(
 
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route index element={<ZohoLogin/>}></Route>
-        <Route path='/' element={<App />}></Route>
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/add' element={<AddForm />} />
-        
-      </Routes>
+        <Routes>
+          <Route index element={<ZohoLogin />} />
+          <Route path="/app" element={<App />}>
+            <Route index element={<Dashboard />} />
+            <Route path="/app/add" element={<AddForm />} /> 
+          </Route>
+        </Routes>
+
+    
     </BrowserRouter>
   </React.StrictMode>
 );

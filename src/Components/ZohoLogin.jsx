@@ -17,7 +17,7 @@ const ZohoLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');    
+    navigate('/app');    
   };
 
   return (
