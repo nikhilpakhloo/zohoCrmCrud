@@ -14,6 +14,9 @@ export default function Dashboard({ mode }) {
     const [editedContact, setEditedContact] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
 
+
+    // -------------------------------------fetching-data from node server---------------------------------------------------------
+
     useEffect(() => {
         fetch(node_url)
             .then((response) => {
@@ -31,11 +34,14 @@ export default function Dashboard({ mode }) {
             });
     }, []);
 
+
+    // --------------------------------------to view all details of contact--------------------------------------------------
     const handleViewClick = (contact) => {
         setSelectedContact(contact);
         setModalIsOpen(true);
         setEditMode(false);
     };
+    // -----------------------------------------------------to edit all details of contact------------------------------------------
 
     const handleEditClick = (contact) => {
         setSelectedContact(contact);
@@ -82,7 +88,7 @@ export default function Dashboard({ mode }) {
     };
 
     
-    
+//    --------------------------------------------------------to insert new contact------------------------------------------------ 
     const handleSaveClick = (e) => {
         e.preventDefault();
         console.log("Updating Id:", selectedContact.id);
@@ -103,6 +109,8 @@ export default function Dashboard({ mode }) {
                 console.error('Error updating contact:', error);
             });
     };
+
+    // ----------------------------------------------to deletespecific contact-----------------------------------------------
     const handleDeleteClick = (contact) => {
         setSelectedContact(contact); 
         
@@ -122,8 +130,9 @@ export default function Dashboard({ mode }) {
     
      
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const contactsPerPage = 5;
+  
+
+    // ------------------------------------to search by name or email--------------------------------------------------
 
     const filteredData = data.filter((contact) => {
         return (
@@ -131,6 +140,11 @@ export default function Dashboard({ mode }) {
             contact.Email.toLowerCase().includes(searchQuery.toLowerCase())
         );
     });
+
+    //--------------------------------------------to show only 5 contacts per page--------------------------------
+    
+    const [currentPage, setCurrentPage] = useState(1);
+    const contactsPerPage = 5;
 
     const indexOfLastContact = currentPage * contactsPerPage;
     const indexOfFirstContact = indexOfLastContact - contactsPerPage;

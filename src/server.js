@@ -16,6 +16,10 @@ app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000',
 }));
+// -------------------------------------------generating my secret-key-------------------------------------------------------
+
+const secretKey = crypto.randomBytes(32).toString('hex'); 
+console.log("This is my secret-key",secretKey);
 
 
 // ---------------------------------Refreshing the Access_token---------------------------------------------------------------------------
@@ -164,29 +168,7 @@ app.delete('/Contacts/:id', async (req, res) => {
 });
 
 
-// -----------------------------------------forauthentication and making jwt token for session---------------------------------------
-const JWT_SECRET = jwtSecretKey;
-app.post('/api/zoho-login', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const response = await axios.post('https://accounts.zoho.in/oauth/v2/token', null, {
-            params: {
-                grant_type: 'password',
-                client_id: CLIENT_ID,
-                client_secret: CLIENT_SECRET,
-                redirect_uri: REDIRECT_URI,
-                username: email,
-                password: password,
-            },
-        });
-        const zohoAccessToken = response.data.access_token;
-        const jwtToken = jwt.sign({ email: email }, JWT_SECRET, { expiresIn: '2h' });
-        res.status(200).json({ jwtToken });
-    } catch (error) {
 
-        res.status(error.response?.status || 500).json({ error: 'Login failed' });
-    }
-});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
