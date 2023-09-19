@@ -1,12 +1,10 @@
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const PORT = 5000;
-
 const REDIRECT_URI = 'http://localhost:3000';
 const ZOHO_API_URL = 'https://www.zohoapis.in/crm/v2/Contacts';
 const CLIENT_ID = '1000.B9BFLV47K6WZH1N9QVCK0CR67GL9YM';
@@ -19,7 +17,11 @@ app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000',
 }));
+//----------------------------------------create secret key--------------------------------------------
+const keyLength = 32
+const secretKey = crypto.randomBytes(keyLength).toString('hex');
 
+console.log("Generated Secret Key:", secretKey);
 
 
 // ---------------------------------Refreshing the Access_token---------------------------------------------------------------------------
