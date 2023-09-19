@@ -66,12 +66,12 @@ export default function Dashboard({ mode }) {
     const renderAllInputFields = (contact) => {
         return Object.keys(contact).map((fieldName) => {
             let value = contact[fieldName];
-    
-          
+
+
             if (typeof value === 'object') {
                 value = JSON.stringify(value);
             }
-    
+
             return (
                 <div className="mb-3" key={fieldName}>
                     <label className="form-label">{fieldName}:</label>
@@ -87,22 +87,22 @@ export default function Dashboard({ mode }) {
         });
     };
 
-    
-//    --------------------------------------------------------to insert new contact------------------------------------------------ 
+
+    //    --------------------------------------------------------to update existing contact------------------------------------------------ 
     const handleSaveClick = (e) => {
         e.preventDefault();
         console.log("Updating Id:", selectedContact.id);
         console.log("Changes made", editedContact);
-    
-     
+
+
         const updatedContactData = { ...editedContact };
-    
-        
+
+
         axios
             .put(`${node_url}/Contacts/${selectedContact.id}`, updatedContactData)
             .then((response) => {
                 console.log('Contact updated successfully:', response.data);
-          
+
                 closeModal();
             })
             .catch((error) => {
@@ -112,25 +112,25 @@ export default function Dashboard({ mode }) {
 
     // ----------------------------------------------to deletespecific contact-----------------------------------------------
     const handleDeleteClick = (contact) => {
-        setSelectedContact(contact); 
-        
-    
-        axios.delete(`${node_url}/Contacts/${contact.id}`)
-        .then((response) => {
-            console.log("Contact is deleting", response.data);
-            window.location.reload();
-            
-        })
-        .catch((error) => {
-            console.error("Error Deleting Contact", error);
-         
-        });
-    };
-    
-    
-     
+        setSelectedContact(contact);
 
-  
+
+        axios.delete(`${node_url}/Contacts/${contact.id}`)
+            .then((response) => {
+                console.log("Contact is deleting", response.data);
+                window.location.reload();
+
+            })
+            .catch((error) => {
+                console.error("Error Deleting Contact", error);
+
+            });
+    };
+
+
+
+
+
 
     // ------------------------------------to search by name or email--------------------------------------------------
 
@@ -142,7 +142,7 @@ export default function Dashboard({ mode }) {
     });
 
     //--------------------------------------------to show only 5 contacts per page--------------------------------
-    
+
     const [currentPage, setCurrentPage] = useState(1);
     const contactsPerPage = 5;
 
@@ -152,6 +152,7 @@ export default function Dashboard({ mode }) {
         indexOfFirstContact,
         indexOfLastContact
     );
+    // to navigate the pagination view
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -192,7 +193,7 @@ export default function Dashboard({ mode }) {
                                     <td>
                                         <button className="btn btn-success btn-sm" onClick={() => handleViewClick(item)}>View</button>
                                         <button className="btn btn-primary ms-3 btn-sm" onClick={() => handleEditClick(item)}>Edit</button>
-                                        
+
                                         <button className="btn btn-danger ms-3 btn-sm" onClick={() => handleDeleteClick(item)}>Delete</button>
                                     </td>
                                 </tr>

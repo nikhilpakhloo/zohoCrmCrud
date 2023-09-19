@@ -41,7 +41,7 @@ export default function AddForm() {
            
 
             setFormData({
-              id: Math.floor(Math.random() * 1000000),
+            
               First_Name: '',
               Last_Name: '',
               Phone: '',
