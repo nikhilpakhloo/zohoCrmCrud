@@ -1,25 +1,25 @@
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const PORT = 5000;
+
 const REDIRECT_URI = 'http://localhost:3000';
-const crypto = require('crypto')
 const ZOHO_API_URL = 'https://www.zohoapis.in/crm/v2/Contacts';
 const CLIENT_ID = '1000.B9BFLV47K6WZH1N9QVCK0CR67GL9YM';
 const CLIENT_SECRET = 'a6cd6da6849b1c7ddef314beabffbf54fbb7a02e5b';
 const REFRESH_TOKEN = '1000.38eb806bbebff514abbdab8c473dea74.b1f79c6b2db45e0f55f346447a22bfae';
 let access_token = '1000.63f13a1996fdd23c1144bc50aab1e754.6b9bae68b039cae6f47f7da256dcb47e';
 let lastTokenRefreshTime = null;
-const jwtSecretKey = crypto.randomBytes(32).toString('hex');
+
 app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000',
 }));
-// -------------------------------------------generating my secret-key-------------------------------------------------------
 
-const secretKey = crypto.randomBytes(32).toString('hex'); 
-console.log("This is my secret-key",secretKey);
 
 
 // ---------------------------------Refreshing the Access_token---------------------------------------------------------------------------
@@ -170,5 +170,5 @@ app.delete('/Contacts/:id', async (req, res) => {
 
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Nodejs Server is running at ${PORT}`);
 });

@@ -19,6 +19,7 @@ root.render(
             <Route index element={<Dashboard />} />
             <Route path="/app/add" element={<AddForm />} /> 
           </Route>
+          <Route path='/login' element={<ZohoLogin/>}/>
         </Routes>
 
     

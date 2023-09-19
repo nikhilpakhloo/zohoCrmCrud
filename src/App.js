@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './index.css';
 import { Link, Outlet } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 function App() {
   const [bg, setbg] = useState({
     backgroundColor: "white",
@@ -20,6 +20,10 @@ function App() {
 
       })
     }
+  }
+  const navigate = useNavigate()
+  const handleLogout = ()=>{
+    navigate("/")
   }
   return (
     <>
@@ -72,12 +76,16 @@ function App() {
               </li>
 
             </ul>
-
+         <div>
+          <button className='btn btn-secondary btn-sm' onClick={handleLogout}>Logout</button>
+         </div>
 
           </div>
+         
           <div className="form-check form-switch">
             <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={toggle} />
           </div>
+        
         </nav>
         <Outlet />
 
