@@ -27,4 +27,23 @@
   
    
   }
- 
+/* Custom CSS for responsiveness */
+@media  (max-width: 795px) {
+    
+    table {
+      width: 100%;
+    }
+    td {
+      padding: 8px;
+      font-size: 14px;
+    }
+    .dash-btn {
+      margin: 5px 0;
+      font-size: 14px;
+     
+    }
+    .links{
+        display: none;
+    }
+  }
+  

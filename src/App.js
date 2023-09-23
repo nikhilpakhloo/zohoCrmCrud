@@ -3,36 +3,39 @@ import './index.css';
 import { Link, Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
   const [bg, setbg] = useState({
-    backgroundColor: "white",
-    color: "black"
-  })
+    backgroundColor: 'white',
+    color: 'black',
+  });
   const toggle = () => {
-    if (bg.backgroundColor === "white") {
+    if (bg.backgroundColor === 'white') {
       setbg({
-        backgroundColor: "black",
-        color: "white"
-      })
+        backgroundColor: 'black',
+        color: 'white',
+      });
     } else {
       setbg({
-        backgroundColor: "white",
-        color: "black"
-
-      })
+        backgroundColor: 'white',
+        color: 'black',
+      });
     }
-  }
-  const navigate = useNavigate()
+  };
+  const navigate = useNavigate();
 
-  //handle logout
-
+  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.setItem('logoutFlag', 'true');
     navigate('/login');
   };
 
-  //istoken expired
+  // Check if the token is expired
   const isTokenExpired = () => {
     const token = localStorage.getItem('token');
     if (!token) return true;
@@ -43,75 +46,159 @@ function App() {
   const isLoggedOut = localStorage.getItem('logoutFlag') === 'true';
   useEffect(() => {
     if (isTokenExpired()) {
-
       handleLogout();
     }
   }, [isLoggedOut, navigate]);
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
       <div className="App" style={bg}>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark" >
-          <a className="navbar-brand" href="#">CRM</a>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a className="navbar-brand" href="#">
+            CRM
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            onClick={toggleMenu}
+          >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item active">
-                <Link className="nav-link" to="#">Home</Link>
 
+          <div
+            className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`}
+          >
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item active">
+                <Link
+                  className="nav-link"
+                  to="/app"
+                  onClick={closeMenu}
+                >
+                  Home
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Leads</a>
+                <a
+                  className="nav-link"
+                  href="#"
+                  onClick={closeMenu} 
+                >
+                  Leads
+                </a>
               </li>
               <li className="nav-item">
-                <Link className='nav-link' to="/app/add">Add_Contacts</Link>
-
+                <Link
+                  className="nav-link"
+                  to="/app/add"
+                  onClick={closeMenu} 
+                >
+                  Add Contacts
+                </Link>
               </li>
-              <li className="nav-item active">
-                <Link className="nav-link" to="#">Accounts</Link>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="#"
+                  onClick={closeMenu} 
 
+
+                >
+                  Accounts
+                </Link>
               </li>
-              <li className="nav-item active">
-                <Link className="nav-link" to="#">Deals</Link>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="#"
+                  onClick={closeMenu} 
 
+                 
+                >
+                  Deals
+                </Link>
               </li>
-              <li className="nav-item active">
-                <Link className="nav-link" to="#">Meetings</Link>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="#"
+                  onClick={closeMenu} 
 
+          
+                >
+                  Meetings
+                </Link>
               </li>
-              <li className="nav-item active">
-                <Link className="nav-link" to="#">Reports</Link>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="#"
+                  onClick={closeMenu} 
 
+                
+                >
+                  Reports
+                </Link>
               </li>
-              <li className="nav-item active">
-                <Link className="nav-link" to="#">Services</Link>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="#"
+                  onClick={closeMenu} 
 
+                
+                >
+                  Services
+                </Link>
               </li>
-              <li className="nav-item active">
-                <Link className="nav-link" to="#">Projects</Link>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="#"
+                  onClick={closeMenu} 
 
+                 
+                >
+                  Projects
+                </Link>
               </li>
-              <li className="nav-item active">
-                <Link className="nav-link" to="#">...</Link>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="#"
+                  onClick={closeMenu} 
 
+                  
+                >
+                  ...
+                </Link>
               </li>
-
+              <li className="nav-item">
+                <button
+                  className="btn btn-secondary btn-sm mt-1"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </li>
             </ul>
-            <div>
-              <button className='btn btn-secondary btn-sm' onClick={handleLogout}>Logout</button>
-            </div>
-
           </div>
-
-          <div className="form-check form-switch">
-            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={toggle} />
+          <div className="form-check form-switch ms-3">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+              onClick={toggle}
+            />
           </div>
-
         </nav>
+
         <Outlet />
-
-
       </div>
     </>
   );

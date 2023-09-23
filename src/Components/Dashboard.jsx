@@ -231,10 +231,12 @@ export default function Dashboard({ mode }) {
                                         <td>{item.Email}</td>
                                         <td>{item.Phone}</td>
                                         <td>
-                                            <button className="btn btn-success btn-sm" onClick={() => handleViewClick(item)}>View</button>
-                                            <button className="btn btn-primary ms-3 btn-sm" onClick={() => handleEditClick(item)}>Edit</button>
+                                            <div className='d-flex flex-wrap justify-content-center'>
+                                            <button className="dash-btn btn btn-success btn-sm mb-2" onClick={() => handleViewClick(item)}>View</button>
+                                            <button className="dash-btn btn btn-primary ms-3 btn-sm mb-2" onClick={() => handleEditClick(item)}>Edit</button>
 
-                                            <button className="btn btn-danger ms-3 btn-sm" onClick={() => handleDeleteClick(item)}>Delete</button>
+                                            <button className="dash-btn btn btn-danger ms-3 btn-sm mb-2" onClick={() => handleDeleteClick(item)}>Delete</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
