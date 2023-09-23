@@ -164,6 +164,8 @@ export default function Dashboard({ mode }) {
         setCurrentPage(pageNumber);
     };
 
+   
+
     return (
         <>
             <h4 className='mt-3 ms-3'>Welcome, Nikhil Pakhloo</h4>

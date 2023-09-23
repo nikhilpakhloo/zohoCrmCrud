@@ -31,14 +31,15 @@ const Email = 'nikhilpakhloo@gmail.com';
 const Password = '123456789';
 
 
+
 app.post('/authenticate', async (req, res) => {
   const { email, password } = req.body;
 
   if (email === Email && password === Password) {
 
-    res.status(200).send('Authentication successful');
+    const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); 
+    res.json({ token });
   } else {
-  
     res.status(401).send('Authentication failed');
   }
 });

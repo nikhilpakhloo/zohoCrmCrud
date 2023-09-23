@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './index.css';
 import { Link, Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 function App() {
   const [bg, setbg] = useState({
     backgroundColor: "white",
@@ -22,9 +23,30 @@ function App() {
     }
   }
   const navigate = useNavigate()
-  const handleLogout = ()=>{
-    navigate("/")
-  }
+
+  //handle logout
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.setItem('logoutFlag', 'true');
+    navigate('/login');
+  };
+
+  //istoken expired
+  const isTokenExpired = () => {
+    const token = localStorage.getItem('token');
+    if (!token) return true;
+    const decodedToken = jwt_decode(token);
+    const currentTime = Date.now() / 1000;
+    return decodedToken.exp < currentTime;
+  };
+  const isLoggedOut = localStorage.getItem('logoutFlag') === 'true';
+  useEffect(() => {
+    if (isTokenExpired()) {
+
+      handleLogout();
+    }
+  }, [isLoggedOut, navigate]);
   return (
     <>
       <div className="App" style={bg}>
@@ -76,16 +98,16 @@ function App() {
               </li>
 
             </ul>
-         <div>
-          <button className='btn btn-secondary btn-sm' onClick={handleLogout}>Logout</button>
-         </div>
+            <div>
+              <button className='btn btn-secondary btn-sm' onClick={handleLogout}>Logout</button>
+            </div>
 
           </div>
-         
+
           <div className="form-check form-switch">
             <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={toggle} />
           </div>
-        
+
         </nav>
         <Outlet />
 

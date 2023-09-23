@@ -23,7 +23,6 @@ const ZohoLogin = () => {
     e.preventDefault();
 
     try {
-
       const response = await fetch('http://localhost:5000/authenticate', {
         method: 'POST',
         headers: {
@@ -33,10 +32,14 @@ const ZohoLogin = () => {
       });
 
       if (response.ok) {
-        setLoggedIn(true)
+        const data = await response.json();
+        const { token } = data;
+
+        // Store the token in local storage for future requests
+        localStorage.setItem('token', token);
+
         navigate('/app');
       } else {
-
         alert('Invalid credentials. Please try again.');
       }
     } catch (error) {
@@ -44,10 +47,10 @@ const ZohoLogin = () => {
       alert('An error occurred while logging in. Please try again later.');
     }
   };
-  const handlelogout = () => {
-    setLoggedIn(false);
-    navigate('/app')
-  }
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login'); 
+  };
 
 
 
