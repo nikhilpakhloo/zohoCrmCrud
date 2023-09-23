@@ -26,6 +26,24 @@ const secretKey = crypto.randomBytes(keyLength).toString('hex');
 console.log("Generated Secret Key:", secretKey);
 
 
+//----------------------------------------LoginAuth-----------------------------------------------------------------
+const Email = 'nikhilpakhloo@gmail.com';
+const Password = '123456789';
+
+
+app.post('/authenticate', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (email === Email && password === Password) {
+
+    res.status(200).send('Authentication successful');
+  } else {
+  
+    res.status(401).send('Authentication failed');
+  }
+});
+
+
 // ---------------------------------Refreshing the Access_token---------------------------------------------------------------------------
 const refreshAccessToken = async () => {
     try {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const ZohoLogin = () => {
   const [email, setEmail] = useState('');
@@ -16,26 +17,38 @@ const ZohoLogin = () => {
     setPassword(e.target.value);
   };
 
+  //----------------------------------getAuth from node server---------------------------------------------------
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const expectedEmail = "nikhilpakhloo@gmail.com";
-      const expectedPassword = "nikhil";
 
-      if (email === expectedEmail && password === expectedPassword) {
-        setLoggedIn(true);
+      const response = await fetch('http://localhost:5000/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        setLoggedIn(true)
         navigate('/app');
       } else {
 
         alert('Invalid credentials. Please try again.');
       }
     } catch (error) {
-
       console.error('Error:', error);
       alert('An error occurred while logging in. Please try again later.');
     }
   };
+  const handlelogout = () => {
+    setLoggedIn(false);
+    navigate('/app')
+  }
+
 
 
   return (

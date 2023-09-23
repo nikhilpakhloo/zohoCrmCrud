@@ -6,4 +6,25 @@
     background-color: black;
     height: 100vh;
 }
-
+@keyframes pulse {
+    0% {
+      transform: scale(0.5, 0.5); 
+      background-color: rgb(116, 110, 110); 
+    }
+    50% {
+      transform: scale(0.5, 0.4); 
+      background-color: rgb(203, 195, 195);
+    }
+    100% {
+      transform: scale(0.5, 0.5); 
+      background-color: rgb(168, 159, 159); 
+    }
+  }
+  
+  .animate-pulse {
+    animation: pulse 1s infinite;
+    border-radius: 25px;
+  
+   
+  }
+ 

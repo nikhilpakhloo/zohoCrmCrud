@@ -3,15 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 
+
 import Dashboard from './Components/Dashboard';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AddForm from './Components/AddForm';
 import App from './App';
 import ZohoLogin from './Components/ZohoLogin';
+import { Provider } from 'react-redux';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
   <React.StrictMode>
+
     <BrowserRouter>
         <Routes>
           <Route index element={<ZohoLogin />} />
@@ -24,6 +27,7 @@ root.render(
 
     
     </BrowserRouter>
+
   </React.StrictMode>
 );
 

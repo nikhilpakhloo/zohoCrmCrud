@@ -2,12 +2,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { Pagination } from 'react-bootstrap';
+import '../index.css'
+
 ReactModal.setAppElement('#root');
 
 const node_url = 'http://localhost:5000';
 
 export default function Dashboard({ mode }) {
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [selectedContact, setSelectedContact] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -18,20 +21,23 @@ export default function Dashboard({ mode }) {
     // -------------------------------------fetching-data from node server---------------------------------------------------------
 
     useEffect(() => {
-        fetch(node_url)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((responseData) => {
-                setData(responseData.data);
-                console.log("fetched data", responseData);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        setTimeout(() => {
+            fetch(node_url)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then((responseData) => {
+                    setData(responseData.data);
+                    setLoading(false);
+                    console.log("fetched data", responseData);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }, 3000);
     }, []);
 
 
@@ -170,38 +176,72 @@ export default function Dashboard({ mode }) {
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
-
-            <div className="container mt-5">
-                <div className={`table-responsive bg-light`}>
-                    <table className="table table-striped table-bordered table-hover">
-                        <thead className="thead-dark">
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Mobile Number</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentContacts.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.id}</td>
-                                    <td>{item.Full_Name}</td>
-                                    <td>{item.Email}</td>
-                                    <td>{item.Phone}</td>
-                                    <td>
-                                        <button className="btn btn-success btn-sm" onClick={() => handleViewClick(item)}>View</button>
-                                        <button className="btn btn-primary ms-3 btn-sm" onClick={() => handleEditClick(item)}>Edit</button>
-
-                                        <button className="btn btn-danger ms-3 btn-sm" onClick={() => handleDeleteClick(item)}>Delete</button>
-                                    </td>
+            {loading ? (
+                <div className="container mt-5">
+                    <div className={`table-responsive bg-light`}>
+                        <table className="table table-striped table-bordered table-hover">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile Number</th>
+                                    <th>Action</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {[...new Array(5)].map((index) => (
+                                    <tr  key={index}>
+                                        <td className='animate-pulse'></td>
+                                        <td className='animate-pulse'></td>
+                                        <td className='animate-pulse'></td>
+                                        <td className='animate-pulse'></td>
+                                        <td>
+                                            <button className="btn btn-lg animate-pulse  " ></button>
+                                            <button className="btn ms-3 btn-lg animate-pulse " ></button>
+
+                                            <button className="btn ms-3 btn-lg animate-pulse"></button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>) : (
+
+                <div className="container mt-5">
+                    <div className={`table-responsive bg-light`}>
+                        <table className="table table-striped table-bordered table-hover">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile Number</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {currentContacts.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.id}</td>
+                                        <td>{item.Full_Name}</td>
+                                        <td>{item.Email}</td>
+                                        <td>{item.Phone}</td>
+                                        <td>
+                                            <button className="btn btn-success btn-sm" onClick={() => handleViewClick(item)}>View</button>
+                                            <button className="btn btn-primary ms-3 btn-sm" onClick={() => handleEditClick(item)}>Edit</button>
+
+                                            <button className="btn btn-danger ms-3 btn-sm" onClick={() => handleDeleteClick(item)}>Delete</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            )}
+
 
             <ReactModal
                 isOpen={modalIsOpen}
